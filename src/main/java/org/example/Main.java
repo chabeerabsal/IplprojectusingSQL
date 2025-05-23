@@ -32,6 +32,7 @@ public class Main {
                 System.out.println(rs.getInt("season") + " - " + rs.getInt("matches_played"));
             }
     } catch (SQLException e) {
+
             throw new RuntimeException(e);
         }
     }
