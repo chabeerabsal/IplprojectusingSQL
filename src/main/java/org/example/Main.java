@@ -14,11 +14,30 @@ public class Main {
         try (Connection conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD)) {
             System.out.println("Connected to MySQL IPL database!");
             matchesPerYear(conn);
+            matchesWonAllyearAllteam(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
 
+    }
+
+    private static void matchesWonAllyearAllteam(Connection conn) {
+        String query="Select winner,Count(*) As total_count from matches where winner!=\"\" group by winner";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("Matches Win");
+            while (rs.next()) {
+                System.out.println(rs.getString("winner") + " - " + rs.getInt("total_count"));
+            }
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+
+
+        }
     }
 
     private static void matchesPerYear(Connection conn) {
