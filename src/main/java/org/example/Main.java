@@ -15,11 +15,30 @@ public class Main {
             System.out.println("Connected to MySQL IPL database!");
             matchesPerYear(conn);
             matchesWonAllyearAllteam(conn);
+            extraRunsConceededperteam(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
 
+    }
+
+    private static void extraRunsConceededperteam(Connection conn) {
+        String query="Select bowling_team,Count(extra_runs) as extra_runs from deliveries join matches on deliveries.match_id=matches.id where season=\"2016\" group by bowling_team order by extra_runs desc ";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("\nExtra runs conceeded!");
+            while (rs.next()) {
+                System.out.println(rs.getString("bowling_team") + " - " + rs.getInt("extra_runs"));
+            }
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+
+
+        }
     }
 
     private static void matchesWonAllyearAllteam(Connection conn) {
